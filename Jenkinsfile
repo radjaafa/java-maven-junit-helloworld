@@ -26,6 +26,7 @@ pipeline {
                 withSonarQubeEnv(installationName:'sonarqube') { 
                     sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
                 }
+            }
 
 
         stage("Quality Gate") {
@@ -37,6 +38,4 @@ pipeline {
             }
         }
     }
-
-    }
-}       
+}
