@@ -14,17 +14,7 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
-        stage('Test') {
-            steps {
-                echo '-----Unit Tests------'
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
-            }
-        }
+        
         stage('SonarQube') {
             environment {
                 scannerHome = tool 'SonarQubeAnalysis'
