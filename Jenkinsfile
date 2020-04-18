@@ -17,8 +17,10 @@ pipeline {
 
         
         stage('SCM') {
+            steps{
             git 'https://github.com/radjaafa/java-maven-junit-helloworld.git'
         }
+    }
 
 
         stage('SonarQube Analysis'){  
