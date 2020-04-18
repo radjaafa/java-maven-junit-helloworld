@@ -5,11 +5,11 @@ pipeline {
             args '-v /root/.m2:/root/.m2' 
         }
     }
-node { 
-  def mvnHome
-  def scannerHome
-  mvnHome = tool 'Maven'
-  scannerHome = tool 'Sonar'
+    node { 
+      def mvnHome
+      def scannerHome
+      mvnHome = tool 'Maven'
+      scannerHome = tool 'Sonar'
 }
     stages {
 
