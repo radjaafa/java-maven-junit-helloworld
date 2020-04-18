@@ -14,16 +14,23 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
+
         
-        stage('SonarQube') {
-            environment {
-                scannerHome = tool 'SonarQube'
-            }
+        stage('SCM') {
+            git 'https://github.com/radjaafa/java-maven-junit-helloworld.git'
+        }
+
+
+        stage('SonarQube Analysis'){  
             steps {
-                withSonarQubeEnv('sonarqube') {
-                    sh "${scannerHome}/bin/sonar-scanner"
+                withSonarQubeEnv(installationName:'sonarqube') { 
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
                 }
-                
+
+
+        stage("Quality Gate") {
+            steps {
+                echo '---------Quality Gate--------'
                 timeout(time: 10, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
