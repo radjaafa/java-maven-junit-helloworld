@@ -5,11 +5,6 @@ pipeline {
             args '-v /root/.m2:/root/.m2' 
         }
     }
-    node { 
-      def mvnHome
-      def scannerHome
-      mvnHome = tool 'Maven'
-      scannerHome = tool 'Sonar'
 }
     stages {
 
@@ -32,10 +27,16 @@ pipeline {
             }
         }
         stage('Sonar Analysis') {
+            environment {
+                scannerHome = tool 'SonarQubeScanner'
+            }
             steps {
-                echo '---SonarAnalysis-----'
-                bat(/"$scannerHome}\bin-sonnar-scanner" -Dsonar.projectKey=java-maven-junit-helloworld -Dsonar.sources=./)
+                withSonarQubeEnv('sonarqube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
                 
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
           }
       }
     } 
