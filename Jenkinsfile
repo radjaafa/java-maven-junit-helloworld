@@ -18,11 +18,7 @@ pipeline {
              steps {
                 sh 'mvn test'
             }
-             post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                 }
-            }
+             
         }
    
         stage('SCM') {
@@ -41,12 +37,18 @@ pipeline {
         }
         stage ('Download arts') {
              steps {
-                
-                 sh 'echo "artifact file" > generatedfile.zip'
+                 
+                 sh 'echo "artifact file" > generatedfile.txt'
 
             }
         }
-            
+
+        stage ('Deploy') {
+            sh 'ssh jenkins@3.125.242.200 rm -rf /temp_deploy/dist'
+            sh 'ssh jenkins@3.125.242.200 mkdir -p /temp_deploy'
+            sh 'scp -r dist jenkins@3.125.242.200"/temp_deploy/dist'
+            sh 'ssh jenkins@3.125.242.200 "rm -rf /var/temp_deploy/dist && mv /var/temp_deploy/dist /var/example"'
+        }    
 
 
         stage("Quality Gate") {
@@ -59,14 +61,12 @@ pipeline {
         }
     }
     post {
-         always {
-             archiveArtifacts artifacts: 'build/generated.zip',
-             fingerprint:true
-             junit 'build/reports/**/*.zip'
+        always {
+             archiveArtifacts artifacts: '**/*.jar',
+             fingerprint:true 
+             junit 'target/surefire-reports/*.xml'
             }
          }
 }
        
-        
-    
-    
+   
