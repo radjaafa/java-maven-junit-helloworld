@@ -47,7 +47,7 @@ pipeline {
             }
         }
             
-     post {
+    post {
          always {
              archiveArtifacts artifacts: '**/*',
              onlyIfSuccessful: true
