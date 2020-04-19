@@ -41,7 +41,7 @@ pipeline {
         }
         stage ('Download arts') {
              steps {
-                 /*sh'mkdir /home/jenkins/testart'*/
+                
                  sh 'echo "artifact file" > generatedfile.zip'
 
             }
