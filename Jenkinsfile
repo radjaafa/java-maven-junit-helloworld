@@ -61,11 +61,12 @@ pipeline {
     post {
          always {
              archiveArtifacts artifacts: 'build/generated.zip',
-             onlyIfSuccessful: true
+             fingerprint:true
+             junit 'build/reports/**/*.zip'
             }
          }
 }
-            
+       
         
     
     
