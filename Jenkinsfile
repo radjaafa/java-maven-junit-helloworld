@@ -47,18 +47,13 @@ pipeline {
             }
         }
             
-        post {
-            always {
-                 archiveArtifacts artifacts: '**/*',
-                 only successful: true 
-            }   
-                 
-                
-        }        
-            
-        
-
-
+     post {
+         always {
+             archiveArtifacts artifacts: '**/*',
+             onlyIfSuccessful: true
+            }
+         }
+           
 
         stage("Quality Gate") {
             steps {
@@ -71,3 +66,6 @@ pipeline {
     }
 }
             
+        
+    
+    
