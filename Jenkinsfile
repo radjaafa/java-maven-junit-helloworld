@@ -40,7 +40,7 @@ pipeline {
             }
         }
         stage ('Download arts') {
-            steps {
+             steps {
                  sh'mkdir testart'
                  sh 'echo "artifact file" > generatedfile.zip'
 
@@ -54,6 +54,17 @@ pipeline {
             }
          }
            
+            
+            
+            
+         
+                    
+                
+              
+            
+        
+
+
 
         stage("Quality Gate") {
             steps {
