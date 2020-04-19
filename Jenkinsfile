@@ -47,12 +47,7 @@ pipeline {
             }
         }
             
-    post {
-         always {
-             archiveArtifacts artifacts: '**/*',
-             onlyIfSuccessful: true
-            }
-         }
+
            
             
             
@@ -75,6 +70,12 @@ pipeline {
             }
         }
     }
+    post {
+         always {
+             archiveArtifacts artifacts: '**/*',
+             onlyIfSuccessful: true
+            }
+         }
 }
             
         
