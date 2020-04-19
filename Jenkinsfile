@@ -41,24 +41,12 @@ pipeline {
         }
         stage ('Download arts') {
              steps {
-                 sh'mkdir testart'
+                 sh'mkdir /home/jenkins/testart'
                  sh 'echo "artifact file" > generatedfile.zip'
 
             }
         }
             
-
-           
-            
-            
-            
-         
-                    
-                
-              
-            
-        
-
 
 
         stage("Quality Gate") {
@@ -72,7 +60,7 @@ pipeline {
     }
     post {
          always {
-             archiveArtifacts artifacts: 'home/jenkins/arts/*.zip',
+             archiveArtifacts artifacts: 'build/generated.zip',
              onlyIfSuccessful: true
             }
          }
