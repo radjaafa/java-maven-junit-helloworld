@@ -39,6 +39,25 @@ pipeline {
                 }
             }
         }
+        stage ('Download arts') {
+            steps {
+                 sh'mkdir testart'
+                 sh 'echo "artifact file" > generatedfile.zip'
+
+            }
+        }
+            
+        post {
+            always {
+                 archiveArtifacts artifacts: '**/*',
+                 only successful: true 
+            }   
+                 
+                
+        }        
+            
+        
+
 
 
         stage("Quality Gate") {
@@ -52,6 +71,3 @@ pipeline {
     }
 }
             
-        
-    
-    
