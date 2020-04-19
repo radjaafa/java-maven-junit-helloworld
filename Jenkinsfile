@@ -72,7 +72,7 @@ pipeline {
     }
     post {
          always {
-             archiveArtifacts artifacts: '**/*',
+             archiveArtifacts artifacts: 'home/jenkins/arts/*.zip',
              onlyIfSuccessful: true
             }
          }
