@@ -2,7 +2,15 @@ pipeline {
     agent {
         label "aws-slave"
         }
+    
     stages {
+                stage('Clean') {
+            steps{
+                cleanWs()
+            }
+        }
+
+        
 
          stage('Build') { 
              steps {
@@ -11,7 +19,6 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package' 
             }
         }
-        
          stage('Test') {
              steps {
                 sh 'mvn test'
@@ -25,6 +32,7 @@ pipeline {
         }
     }
 
+
         stage('SonarQube Analysis'){  
             steps {
                 withSonarQubeEnv(installationName:'sonarqube') { 
@@ -32,7 +40,6 @@ pipeline {
                 }
             }
         }
-        
         stage ('Download arts') {
              steps {
                  
@@ -50,6 +57,7 @@ pipeline {
             }
         }    
 
+
         stage("Quality Gate") {
             steps {
                 echo '---------Quality Gate--------'
@@ -59,7 +67,6 @@ pipeline {
             }
         }
     }
-    
     post {
         always {
              archiveArtifacts artifacts: '**/*.jar',
@@ -67,6 +74,8 @@ pipeline {
              junit 'target/surefire-reports/*.xml'
             }
          }
+
+    
 }
        
    
