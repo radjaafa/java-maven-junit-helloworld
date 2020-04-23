@@ -14,7 +14,7 @@ pipeline {
              steps {
                 echo '-------Build Started mf--------'
                 git 'https://github.com/radjaafa/java-maven-junit-helloworld.git'
-                sh 'mvn -Dmaven.test.failure.ignore=true install' 
+                sh 'mvn install -DskipTests' 
             }
         }
          stage('Test') {
