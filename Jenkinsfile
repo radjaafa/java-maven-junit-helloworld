@@ -10,13 +10,11 @@ pipeline {
             }
         }
 
-        
-
          stage('Build') { 
              steps {
                 echo '-------Build Started mf--------'
                 git 'https://github.com/radjaafa/java-maven-junit-helloworld.git'
-                sh 'mvn clean package' 
+                sh 'mvn -Dmaven.test.failure.ignore=true install' 
             }
         }
          stage('Test') {
