@@ -14,7 +14,7 @@ pipeline {
              steps {
                 echo '-------Build Started mf--------'
                 git 'https://github.com/radjaafa/java-maven-junit-helloworld.git'
-                sh 'mvn install -DskipTests' 
+                sh 'mvn -B -DskipTests clean package' 
             }
         }
          stage('Test') {
