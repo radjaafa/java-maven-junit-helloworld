@@ -20,16 +20,8 @@ pipeline {
          stage('Test') {
              steps {
                 sh 'mvn test'
-            }
-             
-        }
-   
-        stage('SCM') {
-            steps{
-            git 'https://github.com/radjaafa/java-maven-junit-helloworld.git'
-        }
-    }
-
+            }             
+        } 
 
         stage('SonarQube Analysis'){  
             steps {
@@ -38,13 +30,7 @@ pipeline {
                 }
             }
         }
-        stage ('Download arts') {
-             steps {
-                 
-                 sh 'echo "artifact file" > generatedfile.txt'
 
-            }
-        }
 
         stage ('Deploy') {
             steps {
