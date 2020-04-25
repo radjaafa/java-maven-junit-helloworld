@@ -50,10 +50,12 @@ pipeline {
         }
 
         stage ('Deploy') {
+            steps {
             sh 'ssh jenkins@3.125.242.200 rm -rf /temp_deploy/dist'
             sh 'ssh jenkins@3.125.242.200 mkdir -p /temp_deploy'
             sh 'scp -r dist jenkins@3.125.242.200"/temp_deploy/dist'
-            sh 'ssh jenkins@3.125.242.200 "rm -rf /var/temp_deploy/dist && mv /var/temp_deploy/dist /var/example"'
+            sh 'ssh jenkins@3.125.242.200 "rm -rf /var/temp_deploy/dist && mv /var/temp_deploy/dist /var/example"' 
+            }
         }    
 
 
