@@ -55,7 +55,7 @@ pipeline {
             }
                  }
         }
-    post {
+     post {
         always {
              archiveArtifacts artifacts: '**/*.jar',
              fingerprint:true 
