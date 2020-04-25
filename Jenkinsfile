@@ -6,6 +6,9 @@ pipeline {
             args  '-v /root/.m2:/root/.m2'
     }
 }
+    options {
+        skipStagesAfterUnstable()
+    }
     stages {
       /*  stage('Clean') {
             steps{
@@ -41,13 +44,13 @@ pipeline {
                 }
             }
         }
-        stage ('Download arts') {
+        /*stage ('Download arts') {
              steps {
                  
                  sh 'echo "artifact file" > generatedfile.txt'
 
             }
-        }
+        } */
 
         stage ('Deliver') {
             steps {
