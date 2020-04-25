@@ -7,11 +7,11 @@ pipeline {
     }
 }
     stages {
-        /*stage('Clean') {
+        stage('Clean') {
             steps{
                 cleanWs()
             }
-        } */
+        } 
 
          stage('Build') { 
              steps {
@@ -51,11 +51,9 @@ pipeline {
 
         stage ('Deploy') {
             steps {
-                sh './jenkins/scripts/deliver.sh'
-           
+                sh './jenkins/scripts/deliver.sh'           
             }
         }    
-
 
         stage("Quality Gate") {
             steps {
