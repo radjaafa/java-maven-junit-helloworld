@@ -16,13 +16,13 @@ pipeline {
             }
         } */
 
-         stage('Build') { 
-             steps {
-                echo '-------Build Started mf--------'
-                git 'https://github.com/radjaafa/java-maven-junit-helloworld.git'
-                sh 'mvn clean package sonar:sonar' 
+         stage("build & SonarQube analysis") {
+            steps {
+              withSonarQubeEnv('My SonarQube Server') {
+                sh 'mvn clean package sonar:sonar'
+              }
             }
-        }
+         }
         
          stage('Test') {
              steps {
@@ -53,18 +53,13 @@ pipeline {
         stage("Quality Gate") {
             steps {
                 echo '---------Quality Gate--------'
-                timeout(time: 5, unit: 'MINUTES') {
-                    def qg = waitForQualityGate()
-                    if (qg.status != 'OK') {
-                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                    }
-                   
-                }
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+    }
             }
         }
-    }
     post {
-        success {
+        always {
              archiveArtifacts artifacts: '**/*.jar',
              fingerprint:true 
             }
