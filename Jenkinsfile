@@ -7,11 +7,11 @@ pipeline {
     }
 }
     stages {
-        stage('Clean') {
+        /*stage('Clean') {
             steps{
                 cleanWs()
             }
-        } 
+        } */
 
          stage('Build') { 
              steps {
