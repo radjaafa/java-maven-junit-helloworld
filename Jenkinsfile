@@ -28,7 +28,12 @@ pipeline {
              steps {
                 sh 'mvn test'
             }
-             
+            post {
+                always{
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+                 
         }
    
         stage('SCM') {
@@ -71,7 +76,6 @@ pipeline {
         success {
              archiveArtifacts artifacts: '**/*.jar',
              fingerprint:true 
-             junit 'target/surefire-reports/*.xml'
             }
          }
 }
