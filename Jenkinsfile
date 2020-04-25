@@ -6,9 +6,6 @@ pipeline {
             args  '-v /root/.m2:/root/.m2'
     }
 }
-    options {
-        skipStagesAfterUnstable()
-    }
     stages {
       /*  stage('Clean') {
             steps{
@@ -55,8 +52,8 @@ pipeline {
                 echo '---------Quality Gate--------'
                 timeout(time: 10, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
-    }
             }
+                 }
         }
     post {
         always {
@@ -64,5 +61,5 @@ pipeline {
              fingerprint:true 
             }
          }
-}
+    }
 }
