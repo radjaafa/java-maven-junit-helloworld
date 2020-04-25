@@ -3,7 +3,7 @@ pipeline {
         docker {
             image 'maven:3-alpine'
             label 'aws-slave'
-            args  '-v /tmp:/tmp'
+            args  '-v /root/.m2:/root/.m2'
     }
 }
     stages {
