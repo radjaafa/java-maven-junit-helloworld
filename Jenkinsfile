@@ -6,60 +6,68 @@ pipeline {
             args  '-v /root/.m2:/root/.m2'
     }
 }
-    stages {
-      /*  stage('Clean') {
-            steps{
-                cleanWs()
-            }
-        } */
+    options {
+        skipStagesAfterUnstable()
+    }
 
-         stage("build & SonarQube analysis") {
-            steps {
-              withSonarQubeEnv('My SonarQube Server') {
-                sh 'mvn clean package sonar:sonar'
-              }
+    stages {
+
+         stage('Build') { 
+             steps {
+                echo '-------Build Started mf--------'
+                git 'https://github.com/radjaafa/java-maven-junit-helloworld.git'
+                sh 'mvn -B -DskipTests clean package' 
+                archiveArtifacts artifacts: '**/*.jar', fingerprint:true  
             }
-         }
+        }
         
          stage('Test') {
              steps {
                 sh 'mvn test'
+                sh 'mvn verify'
             }
-            post {
-                always{
-                    junit 'target/surefire-reports/*.xml'
+             
+        }
+   
+        stage('SCM') {
+            steps{
+            git 'https://github.com/radjaafa/java-maven-junit-helloworld.git'
+        }
+    }
+    
+        stage('SonarQube Analysis') {  
+            steps {
+                withSonarQubeEnv(installationName:'SonarQube') { 
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar'
                 }
             }
-                 
         }
 
-        /*stage ('Download arts') {
-             steps {
-                 
-                 sh 'echo "artifact file" > generatedfile.txt'
+        /*stage ('Deploy') {
+                when{
+                    expression {
+                        currentBuild.result == null || currentBuild.result == 'SUCCESS'
+                    }
+                }
+                steps{
+                    sh './build.sh'
+                }        
+        }    */
 
-            }
-        } */
-
-        /*stage ('Deliver') {
-            steps {
-                sh './jenkins/scripts/deliver.sh'           
-            }
-        }  */  
-                
         stage("Quality Gate") {
             steps {
                 echo '---------Quality Gate--------'
-                timeout(time: 10, unit: 'MINUTES') {
+                timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
+                }
             }
-                 }
         }
-     post {
-        always {
-             archiveArtifacts artifacts: '**/*.jar',
-             fingerprint:true 
+    }
+    post {
+        success {   
+             junit 'target/surefire-reports/*Test.xml'
+             junit 'target/failsafe-reports/*IT.xml'
+             archive 'target/*jar'
             }
          }
-    }
 }
