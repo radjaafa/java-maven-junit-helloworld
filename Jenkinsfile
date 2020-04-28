@@ -36,7 +36,7 @@ pipeline {
             git 'https://github.com/radjaafa/java-maven-junit-helloworld.git'
         }
     }
-      
+
         stage('SonarQube Analysis') {  
             steps {
                 withSonarQubeEnv(installationName:'SonarQube') { 
@@ -61,10 +61,11 @@ pipeline {
                  }                 
              }
          }
+    }
     post {
         success {   
             echo 'Build finished contrary to common sense'
             }
          }
-    }
+    
 }
