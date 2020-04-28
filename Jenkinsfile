@@ -43,7 +43,7 @@ pipeline {
             }
         }
 
-        /*stage ('Deploy') {
+        /*stage ('Deploy or build') {
                 when{
                     expression {
                         currentBuild.result == null || currentBuild.result == 'SUCCESS'
@@ -62,7 +62,7 @@ pipeline {
                 }
             }
         }
-    }
+    
     post {
         success {   
              junit 'target/surefire-reports/*Test.xml'
@@ -77,4 +77,5 @@ pipeline {
                  }                 
              }
          }
+    }
 }
