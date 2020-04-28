@@ -17,7 +17,7 @@ pipeline {
                 echo '-------Build Started mf--------'
                 git 'https://github.com/radjaafa/java-maven-junit-helloworld.git'
                 sh 'mvn -B -DskipTests clean package' 
-                archiveArtifacts artifacts: '**/*.jar', fingerprint:true  
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint:true  
             }
         }
         
@@ -25,6 +25,8 @@ pipeline {
              steps {
                 sh 'mvn test'
                 sh 'mvn verify'
+                junit 'target/surefire-reports/*Test.xml'
+                junit 'target/failsafe-reports/*IT.xml'
             }
              
         }
@@ -34,7 +36,7 @@ pipeline {
             git 'https://github.com/radjaafa/java-maven-junit-helloworld.git'
         }
     }
-    
+      
         stage('SonarQube Analysis') {  
             steps {
                 withSonarQubeEnv(installationName:'SonarQube') { 
@@ -42,17 +44,6 @@ pipeline {
                 }
             }
         }
-
-        /*stage ('Deploy or build') {
-                when{
-                    expression {
-                        currentBuild.result == null || currentBuild.result == 'SUCCESS'
-                    }
-                }
-                steps{
-                    sh './build.sh'
-                }        
-        }    */
 
         stage("Quality Gate") {
             steps {
@@ -62,20 +53,18 @@ pipeline {
                 }
             }
         }
-    
-    post {
-        success {   
-             junit 'target/surefire-reports/*Test.xml'
-             junit 'target/failsafe-reports/*IT.xml'
-             archive 'target/*jar'
-            }
-         }
+
         stage('Push'){
              steps{
                  sshagent (credentials['jenkins']){
                      sh 'scp -o StrictHostKeyChecking=no target/*.jar jenkins@3.125.242.200'
                  }                 
              }
+         }
+    post {
+        success {   
+            echo 'Build finished contrary to common sense'
+            }
          }
     }
 }
