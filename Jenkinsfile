@@ -47,7 +47,7 @@ pipeline {
         
         stage('Push'){
              steps{
-                 sshagent (credentials['jenkins']){
+                 sshagent (credentials['jenkinsh']){
                      sh 'scp -o StrictHostKeyChecking=no target/*.jar jenkins@3.125.242.200'
                  }                 
              }
