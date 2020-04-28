@@ -44,6 +44,14 @@ pipeline {
                 }
             }
         }
+        
+        stage('Push'){
+             steps{
+                 sshagent (credentials['jenkins']){
+                     sh 'scp -o StrictHostKeyChecking=no target/*.jar jenkins@3.125.242.200'
+                 }                 
+             }
+         }
 
         stage("Quality Gate") {
             steps {
@@ -54,13 +62,6 @@ pipeline {
             }
         }
 
-        stage('Push'){
-             steps{
-                 sshagent (credentials['jenkins']){
-                     sh 'scp -o StrictHostKeyChecking=no target/*.jar jenkins@3.125.242.200'
-                 }                 
-             }
-         }
     }
     post {
         success {   
